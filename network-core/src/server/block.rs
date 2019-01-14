@@ -61,6 +61,21 @@ pub trait BlockService {
 
     fn tip(&mut self) -> Self::TipFuture;
     fn stream_blocks_to_tip(&mut self, from: &[Self::BlockId]) -> Self::StreamBlocksToTipFuture;
+
+    // TODO: return a stream instead of the vector.
+    /// Get block headers between two dates.
+    fn block_headers(
+        &mut self,
+        from: &[Self::BlockId],
+        to: &Self::BlockId,
+    ) -> Self::GetHeadersFuture;
+    // Stream blocks to the provided tip.
+    fn stream_blocks_to(
+        &mut self,
+        from: &[Self::BlockId],
+        to: &Self::BlockId,
+    ) -> Self::StreamBlocksToTipFuture;
+    fn block_headers_to_tip(&mut self, from: &[Self::BlockId]) -> Self::GetHeadersFuture;
 }
 
 /// Represents errors that can be returned by the node service implementation.
