@@ -53,24 +53,6 @@ pub fn listen(
     Ok(stream)
 }
 
-//pub struct Connection<N,F>(F,Server<N>)
-pub struct Connection<F>(F)
-where
-    F: future::Future<Item = (), Error = ()>;
-
-//impl<N,F> Future for Connection<N,F>
-impl<F> Future for Connection<F>
-where
-    F: future::Future<Item = (), Error = ()>,
-{
-    type Item = ();
-    type Error = ();
-
-    fn poll(&mut self) -> Poll<(), ()> {
-        self.0.poll()
-    }
-}
-
 /// Run a server that will listen on a specific sockets
 /// and accept all incomming connections.
 /// Server maintains all of the incomming connection and
@@ -78,7 +60,7 @@ where
 pub fn accept<N: 'static, F>(
     stream: TcpStream,
     node: Server<N>,
-) -> impl future::Future<Item = Connection<impl futures::future::Future>, Error = ()>
+) -> impl future::Future<Item = impl futures::future::Future<Item=(),Error=()>, Error = ()>
 where
     N: server::Node + Clone,
     F: future::Future<Item = (), Error = ()>,
@@ -95,7 +77,7 @@ where
         .map_err(|_| ())
         .and_then(move |connection| {
             let node = node.clone();
-            Ok(Connection(run_connection(node, connection)))
+            Ok(run_connection(node, connection))
         })
 }
 
@@ -105,7 +87,7 @@ where
 pub fn connect<N: 'static, F>(
     sockaddr: SocketAddr,
     node: Server<N>,
-) -> impl future::Future<Item = Connection<impl futures::future::Future>, Error = ()>
+) -> impl future::Future<Item = impl futures::future::Future<Item=(),Error=()>, Error = ()>
 where
     N: server::Node + Clone,
     F: future::Future<Item = (), Error = ()>,
@@ -125,7 +107,7 @@ where
                 .map_err(move |_err| ())
                 .and_then(move |connection| {
                     let node = node.clone();
-                    Ok(Connection(run_connection(node, connection)))
+                    Ok(run_connection(node, connection))
                 })
         })
 }
