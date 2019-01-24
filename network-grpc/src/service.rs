@@ -297,7 +297,7 @@ where
     >;
     type StreamBlocksToTipFuture = FutureResponse<
         Self::StreamBlocksToTipStream,
-        <<T as Node>::BlockService as BlockService>::StreamBlocksToTipFuture,
+        <<T as Node>::BlockService as BlockService>::StreamBlocksFuture,
     >;
     type ProposeTransactionsFuture = FutureResponse<
         gen::node::ProposeTransactionsResponse,
