@@ -241,7 +241,7 @@ where
                             .transaction_service()
                             .unwrap()
                             .propose_transactions(&vec![tx])
-                            .then(|_| Ok(())) // FIXME handle the error
+                            .then(|_| Ok(())), // FIXME handle the error
                     )))
                 }
                 _x => future::Either::A(future::ok(())),

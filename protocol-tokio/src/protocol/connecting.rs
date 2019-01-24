@@ -139,14 +139,11 @@ where
                 Transition::Connected(mut connection) => {
                     let lid = connection.get_next_light_id();
                     let nid = connection.get_next_node_id();
-                    let msg1 : Message<Header,BlockId,Block,TransactionId> =
+                    let msg1: Message<Header, BlockId, Block, TransactionId> =
                         Message::CreateLightWeightConnectionId(lid);
-                    let msg2 : Message<Header,BlockId,Block,TransactionId> =
-                        Message::Bytes(
-                            lid,
-                            cbor!(Handshake::default()).unwrap().into(),
-                        );
-                    let msg3 : Message<Header,BlockId,Block,TransactionId> =
+                    let msg2: Message<Header, BlockId, Block, TransactionId> =
+                        Message::Bytes(lid, cbor!(Handshake::default()).unwrap().into());
+                    let msg3: Message<Header, BlockId, Block, TransactionId> =
                         Message::CreateNodeId(lid, nid);
                     let commands = stream::iter_ok::<_, ::std::io::Error>(vec![
                         msg1.to_nt_event(),

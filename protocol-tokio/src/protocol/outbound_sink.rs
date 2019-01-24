@@ -30,7 +30,7 @@ impl From<io::Error> for OutboundError {
 pub struct OutboundSink<T, Header, BlockId, Block, TransactionId> {
     sink: SplitSink<nt::Connection<T>>,
     state: Arc<Mutex<ConnectionState>>,
-    phantoms: PhantomData<(Header,BlockId, Block, TransactionId)>,
+    phantoms: PhantomData<(Header, BlockId, Block, TransactionId)>,
 }
 impl<T, Header, BlockId, Block, TransactionId>
     OutboundSink<T, Header, BlockId, Block, TransactionId>
